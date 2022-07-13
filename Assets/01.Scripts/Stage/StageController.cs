@@ -20,5 +20,13 @@ public class StageController : MonoBehaviour
         
         bInit = true;
 
+        BuildStage();
+
+        stage.PrintAll();
+    }
+
+    public void BuildStage()
+    {
+        stage = StageBuilder.BuildStage(inStage: 0, inRow: 9, inCol: 9);
     }
 }

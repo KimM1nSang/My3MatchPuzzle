@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Block : MonoBehaviour
+public class Block
 {
     protected BlockType blockType;
     public BlockType Type
@@ -16,4 +16,11 @@ public class Block : MonoBehaviour
             blockType = value;
         }
     }
+
+    public Block(BlockType blockType)
+    {
+        this.blockType = blockType;
+    }
+
+
 }
