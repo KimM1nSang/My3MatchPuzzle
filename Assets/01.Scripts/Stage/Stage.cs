@@ -34,6 +34,12 @@ public class Stage
         Debug.Log(strCells.ToString());
         Debug.Log(strBlocks.ToString());
     }
+
+    internal void ComposeStage(GameObject cellPrefab, GameObject blockPrefab, Transform container)
+    {
+        board.ComposeStage(cellPrefab, blockPrefab, container);
+    }
+
     private Cell SpawnCellForStage(int inRow, int inCol)
     {
         return new Cell(inRow == inCol ? CellType.EMPTY : CellType.BASIC);
