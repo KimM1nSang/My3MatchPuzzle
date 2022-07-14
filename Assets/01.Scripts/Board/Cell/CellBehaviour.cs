@@ -22,7 +22,7 @@ public class CellBehaviour : MonoBehaviour
         }
     }
 
-    internal void SetCell(Cell cell)
+    public void SetCell(Cell cell)
     {
         this.cell = cell;
     }

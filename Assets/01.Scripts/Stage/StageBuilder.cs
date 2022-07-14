@@ -29,14 +29,14 @@ public class StageBuilder : MonoBehaviour
         return stage;
     }
 
-    private Cell SpawnCellForStage(int row, int col)
+    private Cell SpawnCellForStage(int inRow, int inCol)
     {
-        return new Cell(CellType.BASIC);
+        return new Cell(inRow == inCol ? CellType.EMPTY : CellType.BASIC);
     }
 
-    private Block SpawnBlockForStage(int row, int col)
+    private Block SpawnBlockForStage(int inRow, int inCol)
     {
-        return new Block(BlockType.BASIC);
+        return inRow == inCol ? SpawnEmptyBlock() : SpawnBlock();
     }
 
     public static Stage BuildStage(int inStage,int inRow,int inCol)
@@ -44,5 +44,17 @@ public class StageBuilder : MonoBehaviour
         StageBuilder stageBuilder = new StageBuilder(0);
         Stage stage = stageBuilder.ComposeStage(inRow, inCol);
         return stage;
+    }
+
+    public Block SpawnBlock()
+    {
+        return BlockFactory.SpawnBlock(BlockType.BASIC);
+    }
+
+    public Block SpawnEmptyBlock()
+    {
+        Block newBlock = BlockFactory.SpawnBlock(BlockType.EMPTY);
+
+        return newBlock;
     }
 }

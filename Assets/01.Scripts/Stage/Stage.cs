@@ -23,7 +23,6 @@ public class Stage
         {
             for (int col = board.MaxCol - 1; col >=0; col--)
             {
-                board.Cells[row,col] = SpawnCellForStage(row, col);
                 strCells.Append($"{board.Cells[row, col].Type}, ");
                 strBlocks.Append($"{board.Blocks[row, col].Type}, ");
             }
@@ -40,8 +39,4 @@ public class Stage
         board.ComposeStage(cellPrefab, blockPrefab, container);
     }
 
-    private Cell SpawnCellForStage(int inRow, int inCol)
-    {
-        return new Cell(inRow == inCol ? CellType.EMPTY : CellType.BASIC);
-    }
 }

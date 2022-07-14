@@ -21,15 +21,15 @@ public class Board
     private GameObject cellPrefab;
     private GameObject blockPrefab;
 
-    private float offset = 0;
+    private float offset = .9f;
 
-    public Board(int nRow, int nCol)
+    public Board(int inRow, int inCol)
     {
-        row = nRow;
-        col = nCol;
+        row = inRow;
+        col = inCol;
 
-        cells = new Cell[nRow, nCol];
-        blocks = new Block[nRow, nCol];
+        cells = new Cell[inRow, inCol];
+        blocks = new Block[inRow, inCol];
     }
 
     internal void ComposeStage(GameObject cellPrefab, GameObject blockPrefab, Transform container)
@@ -43,23 +43,26 @@ public class Board
         float initX = CalCInitX(0.5f);
         float initY = CalCInitY(0.5f);
         //X 위치 : -열(column)개수 / 2 + 0.5 ,  Y 위치 : -행(row)개수 / 2 + 0.5
-        for (int row = MaxRow -1 ; row >=0; row--)
+        for (int row = 0; row < this.row; row++)
         {
-            for (int col = MaxCol -1 ; col >= 0; col--)
+            for (int col = 0; col < this.col; col++)
             {
-                Cell cell = cells[row, col]?.InstantiateCellObj(cellPrefab, container);
+                Cell cell = Cells[row, col]?.InstantiateCellObj(cellPrefab, container);
                 cell?.Move(initX + col, initY + row);
+
+                Block block = Blocks[row, col]?.InstantiateBlockObj(blockPrefab, container);
+                block?.Move(initX + col, initY + row);
             }
         }
     }
 
     private float CalCInitY(float v)
     {
-        return row / 2.0f * offset;
+        return -row / 2.0f * offset;
     }
 
     private float CalCInitX(float v)
     {
-        return col / 2.0f * offset;
+        return -col / 2.0f * offset;
     }
 }
