@@ -18,3 +18,14 @@ public enum BlockBreed
     BREED_4 = 4,
     BREED_5 = 5,
 }
+
+static class BlockMethod
+{
+    public static bool IsSafeEqual(this Block inBlock, Block inTargetBlock)
+    {
+        if (inBlock == null)
+            return false;
+
+        return inBlock.IsEqual(inTargetBlock);
+    }
+}

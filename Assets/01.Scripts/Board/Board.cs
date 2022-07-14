@@ -21,7 +21,6 @@ public class Board
     private GameObject cellPrefab;
     private GameObject blockPrefab;
 
-    private float offset = .9f;
 
     public Board(int inRow, int inCol)
     {
@@ -38,6 +37,10 @@ public class Board
         this.cellPrefab = cellPrefab;
         this.blockPrefab = blockPrefab;
         this.container = container;
+
+        // 매치된 블럭이 없도록 셔플
+        BoardShuffler shuffler = new BoardShuffler(this, true);
+        shuffler.Shuffle();
 
         // 생성
         float initX = CalCInitX(0.5f);
@@ -56,13 +59,47 @@ public class Board
         }
     }
 
-    private float CalCInitY(float v)
+    /// <summary>
+    /// 셔플 할 수 있는가 (CellType이 EMPTY가 아닌가)
+    /// </summary>
+    /// <param name="inRow"></param>
+    /// <param name="inCol"></param>
+    /// <param name="inbLoading"></param>
+    /// <returns></returns>
+    public bool CanShuffle(int inRow,int inCol, bool inbLoading)
     {
-        return -row / 2.0f * offset;
+        return cells[inRow, inCol].Type.IsBlockMovableType();
     }
 
-    private float CalCInitX(float v)
+    /// <summary>
+    /// 랜덤한 블럭으로 바꾼다
+    /// </summary>
+    /// <param name="inBlock"></param>
+    /// <param name="inNotAllowedBreed"></param>
+    public void ChangeBlock(Block inBlock,BlockBreed inNotAllowedBreed)
     {
-        return -col / 2.0f * offset;
+        BlockBreed genBreed;
+        while(true)
+        {
+            genBreed = BlockFactory.GetRandomBlockBreed();
+
+            if (inNotAllowedBreed == genBreed)
+            {
+                continue;
+            }
+
+            break;
+        }
+
+        inBlock.Breed = genBreed;
+    }
+    public float CalCInitY(float inOffset)
+    {
+        return -row / 2.0f * inOffset;
+    }
+
+    public float CalCInitX(float inOffset)
+    {
+        return -col / 2.0f * inOffset;
     }
 }

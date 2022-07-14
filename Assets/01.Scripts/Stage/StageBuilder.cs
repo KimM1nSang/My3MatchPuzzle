@@ -5,21 +5,25 @@ using UnityEngine;
 
 public class StageBuilder : MonoBehaviour
 {
-    private int stage;
+    private int _stage;
+    private StageInfo _stageInfo;
     public StageBuilder(int inStage)
     {
-        stage = inStage;
+        _stage = inStage;
     }
 
-    public Stage ComposeStage(int inRow, int inCol)
+    public Stage ComposeStage()
     {
-        //생성
-        Stage stage = new Stage(this,inRow,inCol);
+        // 스테이지 로드
+        _stageInfo = LoadStage(_stage);
+
+        //객체 생성
+        Stage stage = new Stage(this,_stageInfo.row, _stageInfo.col);
 
         //Cell Block 초기값 생성
-        for (int row = 0; row < inRow; row++)
+        for (int row = 0; row < _stageInfo.row; row++)
         {
-            for (int col = 0; col < inCol; col++)
+            for (int col = 0; col < _stageInfo.col; col++)
             {
                 stage.board.Blocks[row, col] = SpawnBlockForStage(row, col);
                 stage.board.Cells[row, col] = SpawnCellForStage(row, col);
@@ -29,20 +33,37 @@ public class StageBuilder : MonoBehaviour
         return stage;
     }
 
+    public StageInfo LoadStage(int inStage)
+    {
+        StageInfo stageInfo = StageReader.LoadStage(inStage);
+        if(stageInfo != null)
+        {
+            Debug.Log(stageInfo.ToString());
+        }
+
+        return stageInfo;
+    }
+
     private Cell SpawnCellForStage(int inRow, int inCol)
     {
-        return new Cell(inRow == inCol ? CellType.EMPTY : CellType.BASIC);
+        Debug.Assert(_stageInfo != null);
+        Debug.Assert(inRow < _stageInfo.row && inCol < _stageInfo.col);
+
+        return CellFactory.SpawnCell(_stageInfo, inRow, inCol);
     }
 
     private Block SpawnBlockForStage(int inRow, int inCol)
     {
-        return inRow == inCol ? SpawnEmptyBlock() : SpawnBlock();
+        if (_stageInfo.GetCellType(inRow, inCol) == CellType.EMPTY)
+            return SpawnEmptyBlock();
+
+        return SpawnBlock();
     }
 
-    public static Stage BuildStage(int inStage,int inRow,int inCol)
+    public static Stage BuildStage(int inStage)
     {
-        StageBuilder stageBuilder = new StageBuilder(0);
-        Stage stage = stageBuilder.ComposeStage(inRow, inCol);
+        StageBuilder stageBuilder = new StageBuilder(inStage);
+        Stage stage = stageBuilder.ComposeStage();
         return stage;
     }
 

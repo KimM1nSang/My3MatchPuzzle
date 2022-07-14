@@ -35,7 +35,7 @@ public class StageController : MonoBehaviour
     public void BuildStage()
     {
         // 스테이지 구성
-        stage = StageBuilder.BuildStage(inStage: 0, inRow: 9, inCol: 9);
+        stage = StageBuilder.BuildStage(inStage: 1);
 
         // 스테이지 정보 바탕으로 씬 구성
         stage.ComposeStage(cellPrefab, blockPrefab, container);

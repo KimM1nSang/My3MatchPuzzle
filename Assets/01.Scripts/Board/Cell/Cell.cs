@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,7 +30,6 @@ public class Cell
             _cellBehaviour.SetCell(this);
         }
     }
-
     public Cell(CellType cellType)
     {
         this.cellType = cellType;

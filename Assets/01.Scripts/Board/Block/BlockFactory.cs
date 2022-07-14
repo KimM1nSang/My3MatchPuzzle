@@ -12,7 +12,7 @@ public class BlockFactory : MonoBehaviour
         //Breed 정해주기
         if (inBlockType == BlockType.BASIC)
         {
-            block.Breed = (BlockBreed)UnityEngine.Random.Range(0, System.Enum.GetValues(typeof(BlockBreed)).Length -1);
+            block.Breed = GetRandomBlockBreed();
         }
         else if( inBlockType == BlockType.EMPTY)
         {
@@ -20,5 +20,10 @@ public class BlockFactory : MonoBehaviour
         }
 
         return block;
+    }
+
+    public static BlockBreed GetRandomBlockBreed()
+    {
+        return (BlockBreed)UnityEngine.Random.Range(0, System.Enum.GetValues(typeof(BlockBreed)).Length - 1);
     }
 }
