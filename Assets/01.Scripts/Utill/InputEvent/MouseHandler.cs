@@ -2,17 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MouseHandler : MonoBehaviour
+public class MouseHandler : IInputHandlerBase
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public bool isInputDown => Input.GetButtonDown("Fire1");
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public bool isInputUp => Input.GetButtonUp("Fire1");
+
+    public Vector2 inputPosition => Input.mousePosition;
 }

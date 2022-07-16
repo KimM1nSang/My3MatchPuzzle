@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,5 +32,10 @@ public class BlockBehaviour : MonoBehaviour
     public void SetBlock(Block block)
     {
         this.block = block;
+    }
+
+    public void DoActionClear()
+    {
+        Destroy(gameObject);
     }
 }

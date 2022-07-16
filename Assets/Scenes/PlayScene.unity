@@ -250,9 +250,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b407ba6c166766a4292ac9ac5ad8175e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  container: {fileID: 1059592325}
-  cellPrefab: {fileID: 6951611922535557618, guid: 998596e4bbbed5149abdaaaea0eb15f0, type: 3}
-  blockPrefab: {fileID: 6310038639701837735, guid: 1bcdd84a5cadf8b48b784554cad20d90, type: 3}
+  _container: {fileID: 1059592325}
+  _cellPrefab: {fileID: 6951611922535557618, guid: 998596e4bbbed5149abdaaaea0eb15f0, type: 3}
+  _blockPrefab: {fileID: 6310038639701837735, guid: 1bcdd84a5cadf8b48b784554cad20d90, type: 3}
 --- !u!4 &1059592325
 Transform:
   m_ObjectHideFlags: 0

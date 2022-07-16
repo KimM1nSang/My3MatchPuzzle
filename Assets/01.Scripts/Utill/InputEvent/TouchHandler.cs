@@ -2,17 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TouchHandler : MonoBehaviour
+public class TouchHandler : IInputHandlerBase
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public bool isInputDown => Input.GetTouch(0).phase == TouchPhase.Began;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public bool isInputUp => Input.GetTouch(0).phase == TouchPhase.Ended;
+
+    public Vector2 inputPosition => Input.GetTouch(0).position;
 }

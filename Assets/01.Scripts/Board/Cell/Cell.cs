@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -48,5 +49,10 @@ public class Cell
     public void Move(float inX, float inY)
     {
         cellBehaviour.transform.position = new Vector3(inX, inY);
+    }
+
+    public bool IsObstacle()
+    {
+        return Type == CellType.EMPTY;
     }
 }
