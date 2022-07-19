@@ -179,8 +179,8 @@ public class BoardShuffler : MonoBehaviour
             block.HorzDuplicate = vtDup.x;
             if (block.BlockObj != null)
             {
-                float initX = _board.CalCInitX(Constants.BLOCK_ORG);
-                float initY = _board.CalCInitY(Constants.BLOCK_ORG);
+                float initX = _board.CalcInitX(Constants.BLOCK_ORG);
+                float initY = _board.CalcInitY(Constants.BLOCK_ORG);
                 block.Move(initX + nCol, initY + nRow);
             }
 

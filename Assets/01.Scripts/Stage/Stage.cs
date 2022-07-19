@@ -53,7 +53,7 @@ public class Stage
 
     public void ComposeStage(GameObject cellPrefab, GameObject blockPrefab, Transform container)
     {
-        board.ComposeStage(cellPrefab, blockPrefab, container);
+        board.ComposeStage(cellPrefab, blockPrefab, container,stageBuilder);
     }
 
     public IEnumerator CoDoSwipeAction(int inRow, int inCol, Swipe inSwipeDir, Returnable<bool> inActionResult)
@@ -102,6 +102,10 @@ public class Stage
 
         // 제거된 블럭에 따라, 블럭 재배치
         yield return _board.ArrangeBlockAfterClean(unfilledBlockList, movingBlockList);
+
+        // 재배치 후 재생성
+        yield return _board.SpawnBlocksAfterClean(movingBlockList);
+
 
         // 유저에게 생성된 블럭이 잠시동안 보이도록 다른 블록이 드롭되는 동안 대기
         yield return WaitforDropping(movingBlockList);

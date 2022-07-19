@@ -36,6 +36,28 @@ public class BlockBehaviour : MonoBehaviour
 
     public void DoActionClear()
     {
-        Destroy(gameObject);
+        //Destroy(gameObject);
+
+        StartCoroutine(CoStartSimpleExplosion(true));
+    }
+
+    private IEnumerator CoStartSimpleExplosion(bool inBool = true)
+    {
+        GameObject explosionObj = blockConfig.GetExplosionObject(BlockClearType.CLEAR_SIMPLE);
+        explosionObj.SetActive(true);
+        explosionObj.transform.position = this.transform.position;
+
+        yield return new WaitForSeconds(0.1f);
+
+        // Destroy
+        if(inBool)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Debug.Assert(false, "Unknown Action : GameObject No Destory After Particle");
+        }
+
     }
 }

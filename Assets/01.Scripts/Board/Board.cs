@@ -17,12 +17,12 @@ public class Board
     private Block[,] blocks;
     public Block[,] Blocks { get { return blocks; } }
 
-    private Transform container;
-    private GameObject cellPrefab;
-    private GameObject blockPrefab;
+    private Transform _container;
+    private GameObject _cellPrefab;
+    private GameObject _blockPrefab;
 
     private BoardEnumerator _enumerator;
-
+    private StageBuilder _stageBuilder;
     public Board(int inRow, int icol)
     {
         row = inRow;
@@ -34,20 +34,20 @@ public class Board
         _enumerator = new BoardEnumerator(this);
     }
 
-    internal void ComposeStage(GameObject cellPrefab, GameObject blockPrefab, Transform container)
+    internal void ComposeStage(GameObject cellPrefab, GameObject blockPrefab, Transform container,StageBuilder stageBuilder)
     {
         // 정보 할당
-        this.cellPrefab = cellPrefab;
-        this.blockPrefab = blockPrefab;
-        this.container = container;
-
+        this._cellPrefab = cellPrefab;
+        this._blockPrefab = blockPrefab;
+        this._container = container;
+        this._stageBuilder = stageBuilder;
         // 매치된 블럭이 없도록 셔플
         BoardShuffler shuffler = new BoardShuffler(this, true);
         shuffler.Shuffle();
 
         // 생성
-        float initX = CalCInitX(.5f);
-        float initY = CalCInitY(.5f);
+        float initX = CalcInitX(.5f);
+        float initY = CalcInitY(.5f);
         //X 위치 : -열(column)개수 / 2 + 0.5 ,  Y 위치 : -행(row)개수 / 2 + 0.5
         for (int row = 0; row < this.row; row++)
         {
@@ -224,6 +224,39 @@ public class Board
         yield break;
     }
 
+    public IEnumerator SpawnBlocksAfterClean(List<Block> inMovingBlockList)
+    {
+        for (int col = 0; col < this.col; col++)
+        {
+            for (int row = 0; row < this.row; row++)
+            {
+                //비어있는 블럭이 있는 경우, 상위 열은 모두 비어있거나, 장애물로 인해서 남아있음.
+                if (Blocks[row, col] == null)
+                {
+                    int topRow = row;
+
+                    int spawnBaseY = 0;
+                    for (int y = topRow; y < this.row; y++)
+                    {
+                        if (Blocks[y, col] != null || !CanBlockBeAllocatable(y, col))
+                            continue;
+
+                        Block block = SpawnBlockWithDrop(y, col, spawnBaseY, col);
+                        if (block != null)
+                            inMovingBlockList.Add(block);
+
+                        spawnBaseY++;
+                    }
+
+                    break;
+                }
+            }
+        }
+
+
+        yield return null;
+    }
+
     private bool CanBlockBeAllocatable(int inRow, int inCol)
     {
         if (!Cells[inRow, inCol].Type.IsBlockAllocatableType())
@@ -281,6 +314,8 @@ public class Board
         // 매칭된 블럭 제거
         clearBlockList.ForEach((block) => block.Destroy());
 
+        yield return new WaitForSeconds(0.15f);
+        
         // 매칭된 블럭이 있다
         inMatchResult.value = true;
 
@@ -403,14 +438,31 @@ public class Board
         inBlockList.ForEach(block => block.UpdateBlockStatusMatched((MatchType)matchCount));
     }
 
-    public float CalCInitY(float inOffset = 0)
-
+    public float CalcInitY(float inOffset = 0)
     {
         return -row / 2.0f + inOffset;
     }
 
-    public float CalCInitX(float inOffset = 0)
+    public float CalcInitX(float inOffset = 0)
     {
         return -col / 2.0f + inOffset;
     }
+    private Block SpawnBlockWithDrop(int inRow, int inCol, int inSpawnRow, int inSpawnCol)
+    {
+        float fInitX = CalcInitX(Constants.BLOCK_ORG);
+        float fInitY = CalcInitY(Constants.BLOCK_ORG) + row;
+
+        Block block =_stageBuilder.SpawnBlock().InstantiateBlockObj(_blockPrefab, _container);
+        if (block != null)
+        {
+            Blocks[inRow, inCol] = block;
+            block.Move(fInitX + (float)inSpawnCol, fInitY + (float)(inSpawnRow));
+            block.DropDistance = new Vector2(inSpawnCol - inCol, row + (inSpawnRow - inRow));
+        }
+
+        return block;
+    }
 }
+
+    
+
